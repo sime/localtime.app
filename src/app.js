@@ -21,7 +21,7 @@ class View {
 
     const timeZones = initTimezones();
 
-    timeZones.forEach(timezone => {
+    const addRow = timezone => {
       const clone = this.options.template.content.cloneNode(true);
       options.timeZone = timezone;
       const currentTime = new Intl.DateTimeFormat('en', options).format(date);
@@ -43,7 +43,15 @@ class View {
       });
 
       this.options.times.appendChild(clone);
-    });
+    };
+
+    timeZones.forEach(addRow);
+
+    if (this.options.refreshId === undefined) {
+      this.options.refreshId = setInterval(() => {
+        this.restart();
+      }, 1000);
+    }
   }
 
   restart() {
